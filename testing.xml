@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TechSpace E-Commerce Test Suite - POM">
+    <!-- Authentication Tests -->
+    <test name="Authentication Tests">
+        <classes>
+            <class name="com.techspace.tests.RegisterTest"/>
+            <class name="com.techspace.tests.LoginTest"/>
+        </classes>
+    </test>
+
+    <!-- Shopping Flow Tests -->
+    <test name="Shopping Tests">
+        <classes>
+            <class name="com.techspace.tests.AddToCartTest"/>
+            <class name="com.techspace.tests.CheckoutTest"/>
+            <class name="com.techspace.tests.OrdersTest"/>
+        </classes>
+    </test>
+</suite>
