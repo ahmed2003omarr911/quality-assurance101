@@ -1,6 +1,5 @@
 package com.techspace.tests;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -70,7 +69,7 @@ public class LogoutTest extends TestBase{
     }
 
     /*
-     * TC-AUTH-010: Verify user cannot access protected pages after logout
+     * TC-AUTH-011: Verify user cannot access protected pages after logout
      * Tests that logout prevents access to pages requiring authentication
      */
     @Test
@@ -102,25 +101,5 @@ public class LogoutTest extends TestBase{
         );
 
         System.out.println("✓ Test Passed - Cannot access protected pages after logout!");
-    }
-
-    // ============================================
-    // HELPER METHODS
-    // ============================================
-
-    /*
-     * Get authentication token from localStorage
-     * Returns empty string if token doesn't exist
-     */
-    private String getLocalStorageToken() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-
-        String tokenKey = "token";
-
-        Object token = js.executeScript("return localStorage.getItem('" + tokenKey + "');");
-        if (token != null && !token.toString().equals("null")) {
-            return token.toString();
-        }
-        return "";
     }
 }

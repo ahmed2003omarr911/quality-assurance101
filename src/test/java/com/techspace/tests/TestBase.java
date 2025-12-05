@@ -1,5 +1,6 @@
 package com.techspace.tests;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import com.techspace.pages.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -84,5 +85,21 @@ public class TestBase {
      */
     protected void performDefaultLogin() throws InterruptedException {
         performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+    }
+
+    /*
+     * Helper method: Get authentication token from localStorage
+     * Returns empty string if token doesn't exist
+     */
+    protected String getLocalStorageToken() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        String tokenKey = "token";
+
+        Object token = js.executeScript("return localStorage.getItem('" + tokenKey + "');");
+        if (token != null && !token.toString().equals("null")) {
+            return token.toString();
+        }
+        return "";
     }
 }

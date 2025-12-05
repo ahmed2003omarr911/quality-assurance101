@@ -39,6 +39,71 @@ public class LoginTest extends TestBase {
     }
 
     /*
+     * TC-AUTH-010: Verify user remains logged in after page refresh
+     * Precondition: User must be logged in
+     * Expected Results:
+     * 1. Token persists in localStorage after refresh
+     * 2. User remains authenticated
+     * 3. User email still displayed in navbar
+     */
+    @Test
+    public void testUserRemainsLoggedInAfterRefresh() throws InterruptedException {
+        System.out.println("\n▶ TC-AUTH-010: Testing User Remains Logged In After Page Refresh...");
+
+        // ============================================
+        // PRECONDITION: LOGIN
+        // ============================================
+        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        System.out.println("✓ User logged in successfully");
+
+        // ============================================
+        // STEP 1: VERIFY USER IS LOGGED IN BEFORE REFRESH
+        // ============================================
+        Assert.assertTrue(homePage.isUserLoggedIn(), "User should be logged in!");
+        String emailBeforeRefresh = homePage.getUserEmail();
+        Assert.assertEquals(emailBeforeRefresh, TestData.LOGIN_EMAIL, "User email should be displayed!");
+        System.out.println("✓ Verified user is logged in: " + emailBeforeRefresh);
+
+        // ============================================
+        // STEP 2: GET TOKEN FROM LOCAL STORAGE BEFORE REFRESH
+        // ============================================
+        String tokenBeforeRefresh = getLocalStorageToken();
+        Assert.assertFalse(tokenBeforeRefresh.isEmpty(), "Token should exist before refresh!");
+        System.out.println("✓ Token found before refresh: " + tokenBeforeRefresh.substring(0, Math.min(20, tokenBeforeRefresh.length())) + "...");
+
+        // ============================================
+        // STEP 3: REFRESH THE PAGE
+        // ============================================
+        driver.navigate().refresh();
+        Thread.sleep(3000); // Wait for page to reload
+        System.out.println("✓ Page refreshed");
+
+        // ============================================
+        // STEP 4: VERIFY TOKEN PERSISTS IN LOCAL STORAGE
+        // ============================================
+        String tokenAfterRefresh = getLocalStorageToken();
+        Assert.assertFalse(tokenAfterRefresh.isEmpty(), "Token should persist after refresh!");
+        Assert.assertEquals(tokenAfterRefresh, tokenBeforeRefresh, "Token should be the same after refresh!");
+        System.out.println("✓ Token persists after refresh: " + tokenAfterRefresh.substring(0, Math.min(20, tokenAfterRefresh.length())) + "...");
+
+        // ============================================
+        // STEP 5: VERIFY USER REMAINS LOGGED IN
+        // ============================================
+        Assert.assertTrue(homePage.isUserLoggedIn(), "User should remain logged in after refresh!");
+        String emailAfterRefresh = homePage.getUserEmail();
+        Assert.assertEquals(emailAfterRefresh, TestData.LOGIN_EMAIL, "User email should still be displayed!");
+        System.out.println("✓ User remains logged in: " + emailAfterRefresh);
+
+        // ============================================
+        // STEP 6: VERIFY USER MENU IS STILL DISPLAYED
+        // ============================================
+        Assert.assertTrue(homePage.isUserMenuDisplayed(), "User menu should still be displayed!");
+        System.out.println("✓ User menu is displayed");
+
+        System.out.println("✓ Test Passed - User remains logged in after page refresh!");
+    }
+
+    /*
      * Data Provider for incorrect password test
      * Returns valid emails with wrong passwords
      */
