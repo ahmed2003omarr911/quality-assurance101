@@ -6,6 +6,7 @@
         <classes>
             <class name="com.techspace.tests.RegisterTest"/>
             <class name="com.techspace.tests.LoginTest"/>
+            <class name="com.techspace.tests.LogoutTest"/>
         </classes>
     </test>
 

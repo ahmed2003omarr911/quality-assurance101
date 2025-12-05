@@ -1,6 +1,6 @@
 package com.techspace.tests;
 
-/**
+/*
  * Centralized test data for all test cases
  * Update values here to change test data across all tests
  */
@@ -14,21 +14,24 @@ public class TestData {
     // ============================================
     // USER CREDENTIALS
     // ============================================
-    // Existing user for login tests
+    // Existing user
     public static final String LOGIN_EMAIL = "jim@gmail.com";
     public static final String LOGIN_PASSWORD = "123";
 
+    // Another existing user
+    public static final String USER2_EMAIL = "abdo@gmail.com";
+    public static final String USER2_PASSWORD = "123";
+
     // New user for registration test
-    public static final String NEW_USER_FIRST_NAME = "Jim";
-    public static final String NEW_USER_LAST_NAME = "Doe";
-    public static final String NEW_USER_EMAIL = "jim@gmail.com";
+    public static final String NEW_USER_FIRST_NAME = "Maro";
+    public static final String NEW_USER_LAST_NAME = "Adel";
+    public static final String NEW_USER_EMAIL = "maro@gmail.com";
     public static final String NEW_USER_PASSWORD = "123";
 
     // ============================================
     // PRODUCT DETAILS
     // ============================================
     public static final String PRODUCT_NAME = "MSI Laptop";
-    public static final String PRODUCT_XPATH = "//*[@id=\"root\"]/div/div/div[1]/div/div[3]/button";
 
     // ============================================
     // DELIVERY INFORMATION
@@ -51,5 +54,5 @@ public class TestData {
     // ERROR MESSAGES - LOGIN
     // ============================================
     public static final String ERROR_INCORRECT_CREDENTIALS = "Incorrect Email or Password!";
-    public static final String ERROR_EMPTY_CREDENTIALS = "Check Submitted Data!"; // Update based on actual error
+    public static final String ERROR_EMPTY_CREDENTIALS = "Check Submitted Data!";
 }

@@ -18,6 +18,7 @@ public class HomePage {
     By addToCartButton = By.xpath("//*[@id=\"root\"]/div/div/div[1]/div/div[3]/button");
     By userMenuButton = By.xpath("//*[@id=\"root\"]/header/div/div/div/div/div/div[2]/button");
     By myOrdersPageNavButton = By.xpath("//*[@id=\"menu-appbar\"]/div[3]/ul/li[1]");
+    By logoutButton = By.xpath("//*[@id=\"menu-appbar\"]/div[3]/ul/li[2]/p");
 
     // ============================================
     // CONSTRUCTOR
@@ -71,5 +72,37 @@ public class HomePage {
      */
     public void navToMyOrdersPage() {
         driver.findElement(myOrdersPageNavButton).click();
+    }
+
+    /*
+     * Click Logout Button
+     */
+    public void clickLogoutButton() {
+        driver.findElement(logoutButton).click();
+    }
+
+    // ============================================
+    // VERIFICATION METHODS
+    // ============================================
+
+    /*
+     * Check if user is logged in (user email is displayed)
+     */
+    public boolean isUserLoggedIn() {
+        return driver.findElement(userEmailDisplay).isDisplayed();
+    }
+
+    /*
+     * Check if Login button is displayed in navbar (user is logged out)
+     */
+    public boolean isLoginButtonDisplayed() {
+        return driver.findElement(loginPageNavButton).isDisplayed();
+    }
+
+    /*
+     * Check if user menu is displayed (user is logged in)
+     */
+    public boolean isUserMenuDisplayed() {
+        return driver.findElement(userMenuButton).isDisplayed();
     }
 }

@@ -24,7 +24,7 @@ public class TestBase {
     protected OrderSuccessPage orderSuccessPage;
     protected OrdersPage ordersPage;
 
-    /**
+    /*
      * Runs before each test method
      * Initializes the browser and page objects
      */
@@ -43,7 +43,7 @@ public class TestBase {
 //        System.out.println("✓ Browser started and navigated to: " + TestData.BASE_URL);
     }
 
-    /**
+    /*
      * Initialize all page objects
      */
     private void initializePages() {
@@ -56,7 +56,7 @@ public class TestBase {
         ordersPage = new OrdersPage(driver);
     }
 
-    /**
+    /*
      * Runs after each test method
      * Closes the browser
      */
@@ -68,7 +68,7 @@ public class TestBase {
         }
     }
 
-    /**
+    /*
      * Helper method: Perform login with given credentials
      * This is a reusable method for tests that need authentication
      */
@@ -79,7 +79,7 @@ public class TestBase {
         System.out.println("✓ Logged in as: " + email);
     }
 
-    /**
+    /*
      * Helper method: Perform login with default test user
      */
     protected void performDefaultLogin() throws InterruptedException {
