@@ -1,11 +1,20 @@
 package com.techspace.tests;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import com.techspace.pages.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.io.FileHandler;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /*
  * Base Test Class - Contains common setup and teardown for all tests
@@ -40,8 +49,6 @@ public class TestBase {
 
         // Initialize all page objects
         initializePages();
-
-//        System.out.println("✓ Browser started and navigated to: " + TestData.BASE_URL);
     }
 
     /*
@@ -62,10 +69,47 @@ public class TestBase {
      * Closes the browser
      */
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        // Check if test failed
+        if (result.getStatus() == ITestResult.FAILURE) {
+            // Take screenshot
+            takeScreenshot(result.getName());
+        }
+
+        // Close browser
         if (driver != null) {
             driver.quit();
-//            System.out.println("✓ Browser closed");
+        }
+    }
+
+    /*
+     * Helper Method: Take screenshot with timestamp
+     * Saves screenshot to screenshots/ folder with test name and timestamp
+     */
+    private void takeScreenshot(String testName) {
+        try {
+            // Create screenshots directory if it doesn't exist
+            File screenshotsDir = new File("screenshots");
+            if (!screenshotsDir.exists()) {
+                screenshotsDir.mkdirs();
+            }
+
+            // Generate timestamp for unique filename
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+            String fileName = testName + "_FAILED_" + timestamp + ".png";
+            String filePath = "screenshots/" + fileName;
+
+            // Take screenshot
+            TakesScreenshot screenshot = (TakesScreenshot) driver;
+            File sourceFile = screenshot.getScreenshotAs(OutputType.FILE);
+            File destinationFile = new File(filePath);
+
+            // Save screenshot
+            FileHandler.copy(sourceFile, destinationFile);
+
+            System.out.println("📸 Screenshot saved: " + filePath);
+        } catch (IOException e) {
+            System.out.println("❌ Failed to save screenshot: " + e.getMessage());
         }
     }
 

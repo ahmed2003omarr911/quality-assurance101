@@ -14,6 +14,7 @@ public class CartPage {
     // ============================================
     By productTitle = By.xpath("//*[@id=\"root\"]/div/div[2]/div[1]/div[1]/div/h6");
     By checkoutButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/button");
+    By increaseQuantityButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[1]/div[2]/button[2]");
 
     // ============================================
     // CONSTRUCTOR
@@ -38,5 +39,9 @@ public class CartPage {
      */
     public void clickCheckoutButton() {
         driver.findElement(checkoutButton).click();
+    }
+
+    public void clickIncreaseQuantityButton() {
+        driver.findElement(increaseQuantityButton).click();
     }
 }

@@ -15,7 +15,7 @@ public class HomePage {
     By userEmailDisplay = By.xpath("//*[@id=\"root\"]/header/div/div/div/div/div/div[1]/p");
     By loginPageNavButton = By.xpath("//*[@id=\"root\"]/header/div/div/div/div/button[2]");
     By cartIconButton = By.xpath("//*[@id=\"root\"]/header/div/div/div/div/button");
-    By addToCartButton = By.xpath("//*[@id=\"root\"]/div/div/div[1]/div/div[3]/button");
+    By addToCartButton = By.xpath("/html/body/div[1]/div/div/div[2]/div/div[3]/button");
     By userMenuButton = By.xpath("//*[@id=\"root\"]/header/div/div/div/div/div/div[2]/button");
     By myOrdersPageNavButton = By.xpath("//*[@id=\"menu-appbar\"]/div[3]/ul/li[1]");
     By logoutButton = By.xpath("//*[@id=\"menu-appbar\"]/div[3]/ul/li[2]/p");
@@ -56,7 +56,8 @@ public class HomePage {
     /*
      * Add first product to cart
      */
-    public void addProductToCart() {
+    public void addProductToCart() throws InterruptedException {
+        Thread.sleep(5000);
         driver.findElement(addToCartButton).click();
     }
 
