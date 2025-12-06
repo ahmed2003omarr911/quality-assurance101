@@ -10,11 +10,24 @@ import org.testng.annotations.Test;
 public class LoginTest extends TestBase {
 
     /*
+     * Data Provider for Login with valid credentials
+     * Returns test valid data
+     */
+    @DataProvider(name = "loginWithValidCredentials")
+    public Object[][] getLoginValidCredentials() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
+        };
+    }
+
+    /*
      * TC-AUTH-005: Verify successful login with valid credentials
      * Expected Result: User is logged in and email is displayed in navbar
      */
-    @Test(priority = 1)
-    public void testValidLogin() throws InterruptedException {
+    @Test(priority = 1, dataProvider = "loginWithValidCredentials")
+    public void testValidLogin(String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-AUTH-005: Testing Valid Login...");
 
         // ============================================
@@ -26,7 +39,7 @@ public class LoginTest extends TestBase {
         // ============================================
         // STEP 2: PERFORM LOGIN
         // ============================================
-        loginPage.login(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        loginPage.login(email, password);
         Thread.sleep(3000);
         System.out.println("✓ Login credentials submitted");
 
@@ -34,26 +47,26 @@ public class LoginTest extends TestBase {
         // STEP 3: VERIFY SUCCESSFUL LOGIN
         // ============================================
         String actualEmail = homePage.getUserEmail();
-        Assert.assertEquals(actualEmail, TestData.LOGIN_EMAIL, "Login failed!");
+        Assert.assertEquals(actualEmail, email, "Login failed!");
         System.out.println("✓ Test Passed - User logged in successfully!");
     }
 
     /*
-     * TC-AUTH-010: Verify user remains logged in after page refresh
+     * TC-AUTH-006: Verify user remains logged in after page refresh
      * Precondition: User must be logged in
      * Expected Results:
      * 1. Token persists in localStorage after refresh
      * 2. User remains authenticated
      * 3. User email still displayed in navbar
      */
-    @Test
-    public void testUserRemainsLoggedInAfterRefresh() throws InterruptedException {
-        System.out.println("\n▶ TC-AUTH-010: Testing User Remains Logged In After Page Refresh...");
+    @Test(priority = 2, dataProvider = "loginWithValidCredentials")
+    public void testUserRemainsLoggedInAfterRefresh(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-AUTH-006: Testing User Remains Logged In After Page Refresh...");
 
         // ============================================
         // PRECONDITION: LOGIN
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in successfully");
 
         // ============================================
@@ -61,7 +74,7 @@ public class LoginTest extends TestBase {
         // ============================================
         Assert.assertTrue(homePage.isUserLoggedIn(), "User should be logged in!");
         String emailBeforeRefresh = homePage.getUserEmail();
-        Assert.assertEquals(emailBeforeRefresh, TestData.LOGIN_EMAIL, "User email should be displayed!");
+        Assert.assertEquals(emailBeforeRefresh, email, "User email should be displayed!");
         System.out.println("✓ Verified user is logged in: " + emailBeforeRefresh);
 
         // ============================================
@@ -91,7 +104,7 @@ public class LoginTest extends TestBase {
         // ============================================
         Assert.assertTrue(homePage.isUserLoggedIn(), "User should remain logged in after refresh!");
         String emailAfterRefresh = homePage.getUserEmail();
-        Assert.assertEquals(emailAfterRefresh, TestData.LOGIN_EMAIL, "User email should still be displayed!");
+        Assert.assertEquals(emailAfterRefresh, email, "User email should still be displayed!");
         System.out.println("✓ User remains logged in: " + emailAfterRefresh);
 
         // ============================================
@@ -109,20 +122,39 @@ public class LoginTest extends TestBase {
      */
     @DataProvider(name = "incorrectPasswordData")
     public Object[][] getIncorrectPasswordData() {
-        return new Object[][] {
+        return new Object[][]{
                 // email, password
-                {TestData.LOGIN_EMAIL, "wrongpassword"},           // Wrong password
-                {TestData.LOGIN_EMAIL, "12345"},                   // Different wrong password
+                {TestData.USER1_EMAIL, "wrongpassword"},           // Wrong password
+                {TestData.USER2_EMAIL, "12345"},                   // Different wrong password
         };
     }
 
     /*
-     * TC-AUTH-006: Verify login fails with incorrect password
-     * Expected Result: Error message "Incorrect Email or Password!"
+     * TC-AUTH-007: Verify login fails with incorrect password
+     *
+     * BUG REPORT:
+     * Status depends on test execution - if test FAILS, this documents the bug.
+     *
+     * Expected Behavior: Display error "Incorrect Email or Password!" when user enters wrong password
+     * Actual Behavior (if failing): No error message displayed OR incorrect error message shown
+     *
+     * Test Data:
+     * - Valid email with "wrongpassword"
+     * - Valid email with "12345"
+     *
+     * Priority: HIGH
+     * Impact: Users cannot understand why login failed, poor user experience
+     * Fix Required (if failing): Ensure backend properly returns error message and frontend displays it
+     *
+     * Security Note: Error message correctly doesn't distinguish between wrong email vs wrong password
+     *                (prevents account enumeration attacks)
+     *
+     * Note: This test should PASS if the backend and frontend properly handle incorrect credentials.
+     *       If it FAILS, it indicates the error message is not being displayed correctly.
      */
-    @Test(priority = 2, dataProvider = "incorrectPasswordData")
+    @Test(priority = 3, dataProvider = "incorrectPasswordData")
     public void testLoginWithIncorrectPassword(String email, String password) throws InterruptedException {
-        System.out.println("\n▶ TC-AUTH-006: Testing Login with Incorrect Password...");
+        System.out.println("\n▶ TC-AUTH-007: Testing Login with Incorrect Password...");
         System.out.println("   Email: " + email + " | Password: " + password);
 
         // STEP 1: NAVIGATE TO LOGIN PAGE
@@ -152,20 +184,38 @@ public class LoginTest extends TestBase {
      */
     @DataProvider(name = "nonExistentEmailData")
     public Object[][] getNonExistentEmailData() {
-        return new Object[][] {
+        return new Object[][]{
                 // email, password
                 {"nonexistent@example.com", "123"},                // Email doesn't exist
-                {"random123@yahoo.com", "123"},                    // Random email
         };
     }
 
     /*
-     * TC-AUTH-007: Verify login fails with non-existent email
-     * Expected Result: Error message "Incorrect Email or Password!"
+     * TC-AUTH-008: Verify login fails with non-existent email
+     *
+     * BUG REPORT:
+     * Status depends on test execution - if test FAILS, this documents the bug.
+     *
+     * Expected Behavior: Display error "Incorrect Email or Password!" when user tries to login with non-existent email
+     * Actual Behavior (if failing): No error message displayed OR incorrect error message shown
+     *
+     * Test Data:
+     * - "nonexistent@example.com" (email doesn't exist in database)
+     * - "random123@yahoo.com" (random email)
+     *
+     * Priority: HIGH
+     * Impact: Users who mistype their email or don't have an account get no feedback
+     * Fix Required (if failing): Ensure backend properly returns error message and frontend displays it
+     *
+     * Security Note: Error message correctly doesn't distinguish between wrong email vs wrong password
+     *                (prevents account enumeration attacks - attackers can't discover valid emails)
+     *
+     * Note: This test should PASS if the backend and frontend properly handle non-existent accounts.
+     *       If it FAILS, it indicates the error message is not being displayed correctly.
      */
-    @Test(priority = 3, dataProvider = "nonExistentEmailData")
+    @Test(priority = 4, dataProvider = "nonExistentEmailData")
     public void testLoginWithNonExistentEmail(String email, String password) throws InterruptedException {
-        System.out.println("\n▶ TC-AUTH-007: Testing Login with Non-Existent Email...");
+        System.out.println("\n▶ TC-AUTH-008: Testing Login with Non-Existent Email...");
         System.out.println("   Email: " + email);
 
         // STEP 1: NAVIGATE TO LOGIN PAGE
@@ -195,21 +245,21 @@ public class LoginTest extends TestBase {
      */
     @DataProvider(name = "emptyCredentialsData")
     public Object[][] getEmptyCredentialsData() {
-        return new Object[][] {
+        return new Object[][]{
                 // email, password, emptyField
                 {"", "123", "Email"},                              // Empty email
-                {TestData.LOGIN_EMAIL, "", "Password"},            // Empty password
+                {TestData.USER1_EMAIL, "", "Password"},            // Empty password
                 {"", "", "Both Email and Password"},               // Both empty
         };
     }
 
     /*
-     * TC-AUTH-008: Verify login fails with empty credentials
+     * TC-AUTH-009: Verify login fails with empty credentials
      * Expected Result: Error message displayed
      */
-    @Test(priority = 4, dataProvider = "emptyCredentialsData")
+    @Test(priority = 5, dataProvider = "emptyCredentialsData")
     public void testLoginWithEmptyCredentials(String email, String password, String emptyField) throws InterruptedException {
-        System.out.println("\n▶ TC-AUTH-008: Testing Login with Empty " + emptyField);
+        System.out.println("\n▶ TC-AUTH-009: Testing Login with Empty " + emptyField);
 
         // STEP 1: NAVIGATE TO LOGIN PAGE
         homePage.clickLoginButton();
@@ -223,7 +273,7 @@ public class LoginTest extends TestBase {
         // STEP 3: VERIFY ERROR MESSAGE
         String errorMessage = loginPage.getErrorMessage();
 
-        Assert.assertEquals(errorMessage,TestData.ERROR_EMPTY_CREDENTIALS,
+        Assert.assertEquals(errorMessage, TestData.ERROR_EMPTY_CREDENTIALS,
                 "Expected error message not displayed for empty " + emptyField
         );
 

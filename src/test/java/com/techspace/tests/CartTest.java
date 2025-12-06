@@ -1,9 +1,9 @@
 package com.techspace.tests;
 
-import com.techspace.pages.CartPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /*
@@ -13,7 +13,20 @@ import org.testng.annotations.Test;
 public class CartTest extends TestBase {
 
     /*
-     * TC-CART-004: Verify cannot add product exceeding stock
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentials")
+    public Object[][] getLoginValidCredentials() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
+        };
+    }
+
+    /*
+     * TC-CART-003: Verify cannot add product exceeding stock
      *
      * BUG REPORT:
      * Currently FAILING - Application does not show error message when stock limit is exceeded.
@@ -31,15 +44,15 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Must reach maximum stock limit
      */
-    @Test
-    public void testCannotExceedProductStock() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-004: Testing Cannot Exceed Product Stock...");
+    @Test(priority = 1, dataProvider = "loginWithValidCredentials")
+    public void testCannotExceedProductStock(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-003: Testing Cannot Exceed Product Stock...");
         System.out.println("⚠️  NOTE: This test is EXPECTED TO FAIL - Documents a UI bug");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.USER2_EMAIL, TestData.USER2_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -107,7 +120,7 @@ public class CartTest extends TestBase {
         }
 
         if (!errorDisplayed) {
-            System.out.println("⚠️  No error message found in UI (as expected - this is the bug)");
+            System.out.println("No error message found in UI (as expected - this is the bug)");
             errorMessage = "(No error message displayed in UI - error only in browser console)";
         }
 
@@ -116,7 +129,7 @@ public class CartTest extends TestBase {
         // ============================================
         Assert.assertTrue(
                 errorDisplayed && errorMessage.toLowerCase().contains("stock"),
-                "🐛 BUG CONFIRMED: No error message displayed when trying to exceed stock!\n" +
+                "   BUG CONFIRMED: No error message displayed when trying to exceed stock!\n" +
                         "   Expected: Visible error message containing 'Low stock for item!' or similar\n" +
                         "   Actual: " + errorMessage + "\n" +
                         "   Location Checked: Multiple common error message locations in DOM\n" +
@@ -128,7 +141,7 @@ public class CartTest extends TestBase {
     }
 
     /*
-     * TC-CART-005: Verify user can increase product quantity
+     * TC-CART-004: Verify user can increase product quantity
      * Input: Click "+" button on cart item
      * Expected: Quantity increases, total amount updates
      *
@@ -136,14 +149,14 @@ public class CartTest extends TestBase {
      * - User must be logged in
      * - Product must be in cart
      */
-    @Test
-    public void testIncreaseProductQuantity() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-005: Testing Increase Product Quantity...");
+    @Test(priority = 2, dataProvider = "loginWithValidCredentials")
+    public void testIncreaseProductQuantity(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-004: Testing Increase Product Quantity...");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -196,7 +209,7 @@ public class CartTest extends TestBase {
     }
 
     /*
-     * TC-CART-006: Verify user can decrease product quantity
+     * TC-CART-005: Verify user can decrease product quantity
      * Input: Click "-" button on cart item
      * Expected: Quantity decreases, total amount updates
      *
@@ -205,14 +218,14 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Quantity must be greater than 1
      */
-    @Test
-    public void testDecreaseProductQuantity() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-006: Testing Decrease Product Quantity...");
+    @Test(priority = 3, dataProvider = "loginWithValidCredentials")
+    public void testDecreaseProductQuantity(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-005: Testing Decrease Product Quantity...");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -274,7 +287,7 @@ public class CartTest extends TestBase {
     }
 
     /*
-     * TC-CART-007: Verify quantity cannot be decreased below 1
+     * TC-CART-006: Verify quantity cannot be decreased below 1
      * Input: Click "-" when quantity is 1
      * Expected: Quantity remains 1 (no action)
      *
@@ -283,14 +296,14 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Quantity must be 1
      */
-    @Test
-    public void testCannotDecreaseQuantityBelowOne() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-007: Testing Cannot Decrease Quantity Below 1...");
+    @Test(priority = 4, dataProvider = "loginWithValidCredentials")
+    public void testCannotDecreaseQuantityBelowOne(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-006: Testing Cannot Decrease Quantity Below 1...");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -330,7 +343,7 @@ public class CartTest extends TestBase {
     }
 
     /*
-     * TC-CART-008: Verify total amount calculates correctly
+     * TC-CART-007: Verify total amount calculates correctly
      * Input: Multiple items with different quantities
      * Expected: Total = sum of (quantity × unitPrice) for all items
      *
@@ -339,14 +352,14 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Test multiple quantity scenarios
      */
-    @Test
-    public void testTotalAmountCalculation() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-008: Testing Total Amount Calculation...");
+    @Test(priority = 5, dataProvider = "loginWithValidCredentials")
+    public void testTotalAmountCalculation(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-007: Testing Total Amount Calculation...");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -408,7 +421,20 @@ public class CartTest extends TestBase {
     }
 
     /*
-     * TC-CART-009: Verify user can remove item from cart
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentialsAndProductName")
+    public Object[][] getLoginValidCredentialsWithProductName() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.PRODUCT_NAME},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.PRODUCT_NAME},
+        };
+    }
+
+    /*
+     * TC-CART-008: Verify user can remove item from cart
      * Input: Click "Remove Item" button
      * Expected: Item removed, cart shows empty state
      *
@@ -416,14 +442,14 @@ public class CartTest extends TestBase {
      * - User must be logged in
      * - Product must be in cart
      */
-    @Test
-    public void testRemoveItemFromCart() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-009: Testing Remove Item From Cart...");
+    @Test(priority = 6, dataProvider = "loginWithValidCredentialsAndProductName")
+    public void testRemoveItemFromCart(String email, String password, String productName) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-008: Testing Remove Item From Cart...");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -441,7 +467,7 @@ public class CartTest extends TestBase {
         // STEP 2: VERIFY PRODUCT IS IN CART
         // ============================================
         String productBeforeRemoval = cartPage.getProductTitle();
-        Assert.assertEquals(productBeforeRemoval, TestData.PRODUCT_NAME,
+        Assert.assertEquals(productBeforeRemoval, productName,
                 "Product should be in cart before removal!");
         System.out.println("✓ Product in cart before removal: " + productBeforeRemoval);
 
@@ -473,7 +499,7 @@ public class CartTest extends TestBase {
     }
 
     /*
-     * TC-CART-010: Verify user can clear entire cart
+     * TC-CART-009: Verify user can clear entire cart
      * Input: Click "Clear Cart" button
      * Expected: All items removed, cart shows "Cart is Empty!"
      *
@@ -481,14 +507,14 @@ public class CartTest extends TestBase {
      * - User must be logged in
      * - Multiple products in cart (or at least one)
      */
-    @Test
-    public void testClearEntireCart() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-010: Testing Clear Entire Cart...");
+    @Test(priority = 7, dataProvider = "loginWithValidCredentialsAndProductName")
+    public void testClearEntireCart(String email, String password, String productName) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-009: Testing Clear Entire Cart...");
 
         // ============================================
         // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
@@ -506,7 +532,7 @@ public class CartTest extends TestBase {
         // STEP 2: VERIFY CART HAS ITEMS
         // ============================================
         String productBeforeClear = cartPage.getProductTitle();
-        Assert.assertEquals(productBeforeClear, TestData.PRODUCT_NAME,
+        Assert.assertEquals(productBeforeClear, productName,
                 "Product should be in cart before clearing!");
         System.out.println("✓ Product in cart before clear: " + productBeforeClear);
 

@@ -33,9 +33,9 @@ public class OrdersPage {
         return driver.findElement(pageHeading).getText();
     }
 
-    public int calculateNumberOfOrders () {
+    public int calculateNumberOfOrders() {
         int numberOfOrders = driver.findElements(orderLocator).size();
-        if(numberOfOrders > 0){
+        if (numberOfOrders > 0) {
             System.out.println("Number of orders: " + numberOfOrders);
         } else {
             System.out.println("No orders found on the page!");

@@ -15,18 +15,28 @@ public class TestData {
     // USER CREDENTIALS
     // ============================================
     // Existing user
-    public static final String LOGIN_EMAIL = "jim@gmail.com";
-    public static final String LOGIN_PASSWORD = "123";
+    public static final String USER1_FIRST_NAME = "Islam";
+    public static final String USER1_LAST_NAME = "Gamal";
+    public static final String USER1_EMAIL = "islam@gmail.com";
+    public static final String USER1_PASSWORD = "123";
 
     // Another existing user
-    public static final String USER2_EMAIL = "abdo@gmail.com";
+    public static final String USER2_FIRST_NAME = "Amr";
+    public static final String USER2_LAST_NAME = "Essam";
+    public static final String USER2_EMAIL = "amr@gmail.com";
     public static final String USER2_PASSWORD = "123";
 
     // New user for registration test
-    public static final String NEW_USER_FIRST_NAME = "Maro";
-    public static final String NEW_USER_LAST_NAME = "Adel";
-    public static final String NEW_USER_EMAIL = "maro@gmail.com";
+    public static final String NEW_USER_FIRST_NAME = "Muhammed";
+    public static final String NEW_USER_LAST_NAME = "Ahmed";
+    public static final String NEW_USER_EMAIL = "muhammed@gmail.com";
     public static final String NEW_USER_PASSWORD = "123";
+
+    // New user for registration test
+    public static final String NEW_USER2_FIRST_NAME = "Mahmoud";
+    public static final String NEW_USER2_LAST_NAME = "Ali";
+    public static final String NEW_USER2_EMAIL = "mahmoud@gmail.com";
+    public static final String NEW_USER2_PASSWORD = "123";
 
     // ============================================
     // PRODUCT DETAILS

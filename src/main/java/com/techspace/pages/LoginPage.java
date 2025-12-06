@@ -84,13 +84,6 @@ public class LoginPage {
     }
 
     /*
-     * Check if error message is displayed
-     */
-    public boolean isErrorDisplayed() {
-        return driver.findElement(errorMessage).isDisplayed();
-    }
-
-    /*
      * Check if user is still on login page (login failed)
      */
     public boolean isOnLoginPage() {

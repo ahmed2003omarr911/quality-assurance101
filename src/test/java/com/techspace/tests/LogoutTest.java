@@ -1,29 +1,44 @@
 package com.techspace.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /*
  * Test Suite: User Logout Functionality
  * Verifies that users can successfully log out and session is cleared
  */
-public class LogoutTest extends TestBase{
+public class LogoutTest extends TestBase {
+
     /*
-     * TC-AUTH-009: Verify user can log out successfully
+     * Data Provider for Login with valid credentials
+     * Returns test valid data
+     */
+    @DataProvider(name = "loginWithValidCredentials")
+    public Object[][] getLoginValidCredentials() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
+        };
+    }
+
+    /*
+     * TC-AUTH-010: Verify user can log out successfully
      * Precondition: User must be logged in
      * Expected Results:
      * 1. Token removed from localStorage
      * 2. User redirected to home page
      * 3. Navbar shows "Login" button instead of user menu
      */
-    @Test
-    public void testSuccessfulLogout() throws InterruptedException {
-        System.out.println("\n▶ TC-AUTH-009: Testing Successful Logout...");
+    @Test(priority = 1, dataProvider = "loginWithValidCredentials")
+    public void testSuccessfulLogout(String email, String password) throws InterruptedException {
+        System.out.println("\n▶ TC-AUTH-010: Testing Successful Logout...");
 
         // ============================================
         // PRECONDITION: LOGIN
         // ============================================
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in successfully");
 
         // ============================================
@@ -72,12 +87,12 @@ public class LogoutTest extends TestBase{
      * TC-AUTH-011: Verify user cannot access protected pages after logout
      * Tests that logout prevents access to pages requiring authentication
      */
-    @Test
-    public void testProtectedPagesAfterLogout() throws InterruptedException {
+    @Test(priority = 2, dataProvider = "loginWithValidCredentials")
+    public void testProtectedPagesAfterLogout(String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-AUTH-011: Testing Protected Pages After Logout...");
 
         // LOGIN
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        performLogin(email, password);
         System.out.println("✓ User logged in");
 
         // LOGOUT

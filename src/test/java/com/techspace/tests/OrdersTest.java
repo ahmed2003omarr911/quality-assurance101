@@ -1,6 +1,7 @@
 package com.techspace.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /*
@@ -9,18 +10,31 @@ import org.testng.annotations.Test;
 public class OrdersTest extends TestBase {
 
     /*
-     * Test Case: Verify user can navigate to Orders page
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentialsWithOrdersPageHeading")
+    public Object[][] getLoginValidCredentials() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.ORDERS_PAGE_HEADING},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.ORDERS_PAGE_HEADING},
+        };
+    }
+
+    /*
+     * TC-ORDERS-001: Verify user can navigate to Orders page
      * Precondition: User must be logged in
      * Expected Result: Orders page is displayed with correct heading
      */
-    @Test
-    public void testNavigateToOrdersPage() throws InterruptedException {
+    @Test(priority = 1, dataProvider = "loginWithValidCredentialsWithOrdersPageHeading")
+    public void testNavigateToOrdersPage(String email, String password, String ordersPageHeading) throws InterruptedException {
         System.out.println("\n▶ Starting Orders Page Test...");
 
         // ============================================
         // PRECONDITION: LOGIN
         // ============================================
-        performLogin(TestData.NEW_USER_EMAIL, TestData.NEW_USER_PASSWORD);
+        performLogin(email, password);
 
         // ============================================
         // STEP 1: OPEN USER MENU
@@ -40,21 +54,21 @@ public class OrdersTest extends TestBase {
         // STEP 3: VERIFY ORDERS PAGE DISPLAYED
         // ============================================
         String actualHeading = ordersPage.getPageHeading();
-        Assert.assertEquals(actualHeading, TestData.ORDERS_PAGE_HEADING, "Orders page navigation failed - Wrong page displayed!");
+        Assert.assertEquals(actualHeading, ordersPageHeading, "Orders page navigation failed - Wrong page displayed!");
         System.out.println("✓ Test Passed - Orders page verified with heading: " + actualHeading);
     }
 
     /*
-     * Test Case: Verify orders are displayed on Orders page
+     * TC-ORDERS-002: Verify orders are displayed on Orders page
      * Precondition: User must be logged in and have previous orders
      * Expected Result: At least one order is displayed
      */
-    @Test
-    public void testOrdersAreDisplayed() throws InterruptedException {
+    @Test(priority = 2, dataProvider = "loginWithValidCredentialsWithOrdersPageHeading")
+    public void testOrdersAreDisplayed(String email, String password, String ordersPageHeading) throws InterruptedException {
         System.out.println("\n▶ Starting Orders Display Test...");
 
         // PRECONDITION: LOGIN
-        performLogin(TestData.NEW_USER_EMAIL, TestData.NEW_USER_PASSWORD);
+        performLogin(email, password);
 
         // NAVIGATE TO ORDERS PAGE
         homePage.clickUserMenu();

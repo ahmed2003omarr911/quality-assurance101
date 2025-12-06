@@ -1,26 +1,45 @@
 package com.techspace.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /*
  * Test Suite: Checkout Process
  */
-public class CheckoutTest extends TestBase{
+public class CheckoutTest extends TestBase {
 
     /*
-     * Test Case: Verify user can complete checkout process
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentialsWithAddressAndSuccessMessage")
+    public Object[][] getLoginValidCredentials() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
+        };
+    }
+
+    /*
+     * TC-CHECK-001: Verify user can complete checkout process
      * Precondition: User must be logged in and have items in cart
      * Expected Result: Order is placed successfully with confirmation message
      */
-    @Test
-    public void testCompleteCheckout() throws InterruptedException {
+    @Test(priority = 1, dataProvider = "loginWithValidCredentialsWithAddressAndSuccessMessage")
+    public void testCompleteCheckout(String email, String password, String address, String orderSuccessMessage) throws InterruptedException {
         System.out.println("\n▶ Starting Checkout Test...");
 
         // ============================================
-        // PRECONDITION: LOGIN
+        // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
         // ============================================
-        performLogin(TestData.NEW_USER_EMAIL, TestData.NEW_USER_PASSWORD);
+        performLogin(email, password);
+        System.out.println("✓ User logged in");
+
+        homePage.addProductToCart();
+        Thread.sleep(2000);
+        System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
@@ -39,15 +58,15 @@ public class CheckoutTest extends TestBase{
         // ============================================
         // STEP 3: COMPLETE CHECKOUT
         // ============================================
-        checkoutPage.completeCheckout(TestData.DELIVERY_ADDRESS);
+        checkoutPage.completeCheckout(address);
         Thread.sleep(5000);
-        System.out.println("✓ Checkout completed with address: " + TestData.DELIVERY_ADDRESS);
+        System.out.println("✓ Checkout completed with address: " + address);
 
         // ============================================
         // STEP 4: VERIFY ORDER SUCCESS
         // ============================================
         String actualMessage = orderSuccessPage.getSuccessMessage();
-        Assert.assertEquals(actualMessage, TestData.ORDER_SUCCESS_MESSAGE, "Order checkout failed - Wrong message displayed!");
+        Assert.assertEquals(actualMessage, orderSuccessMessage, "Order checkout failed - Wrong message displayed!");
         System.out.println("✓ Test Passed - Order placed successfully!");
     }
 }

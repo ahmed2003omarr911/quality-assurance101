@@ -69,7 +69,7 @@ public class TestBase {
      * Closes the browser
      */
     @AfterMethod
-    public void tearDown(ITestResult result) {
+    public void tearDown(ITestResult result) throws InterruptedException {
         // Check if test failed
         if (result.getStatus() == ITestResult.FAILURE) {
             // Take screenshot
@@ -138,5 +138,20 @@ public class TestBase {
             return token.toString();
         }
         return "";
+    }
+
+    /*
+     * Helper method: Clearing Cart for the next test case
+     * This is a reusable method for cleaning the cart before tearing down
+     */
+    protected void clearCart() throws InterruptedException {
+        // Navigate to the website
+        driver.get(TestData.BASE_URL);
+
+        // Navigate to cart page
+        homePage.clickCartIcon();
+
+        // clear the cart
+        cartPage.clickClearCartButton();
     }
 }

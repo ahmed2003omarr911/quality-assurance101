@@ -1,6 +1,7 @@
 package com.techspace.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /*
@@ -9,18 +10,31 @@ import org.testng.annotations.Test;
 public class AddToCartTest extends TestBase {
 
     /*
-     * Test Case: Verify user can add a product to  their cart
+     * Data Provider for Adding a product to the cart
+     * Returns test valid data for login and product name
+     */
+    @DataProvider(name = "addingProductToCart")
+    public Object[][] getLoginValidCredentials() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.PRODUCT_NAME},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.PRODUCT_NAME},
+        };
+    }
+
+    /*
+     * TC-CART-001: Verify user can add a product to their cart
      * Precondition: User must be logged in
      * Expected Result: Product appears in cart with correct name
      */
-    @Test
-    public void testAddProductToCartTest() throws InterruptedException {
-        System.out.println("\n▶ Starting Add to Cart Test...");
+    @Test(priority = 1, dataProvider = "addingProductToCart")
+    public void testAddProductToCartTest(String email, String password, String productName) throws InterruptedException {
+        System.out.println("\n▶ TC-CART-001: Testing Add to Cart...");
 
         // ============================================
         // PRECONDITION: LOGIN
         // ============================================
-        performLogin(TestData.NEW_USER_EMAIL, TestData.NEW_USER_PASSWORD);
+        performLogin(email, password);
 
         // ============================================
         // STEP 1: ADD PRODUCT TO CART
@@ -39,12 +53,12 @@ public class AddToCartTest extends TestBase {
         // STEP 3: VERIFY PRODUCT IN CART
         // ============================================
         String actualProductName = cartPage.getProductTitle();
-        Assert.assertEquals(actualProductName, TestData.PRODUCT_NAME, "Wrong product in cart!");
+        Assert.assertEquals(actualProductName, productName, "Wrong product in cart!");
         System.out.println("✓ Test Passed - Product verified in cart: " + actualProductName);
     }
 
     /*
-     * TC-CART-003: Verify adding product requires authentication
+     * TC-CART-002: Verify adding a product requires authentication
      *
      * BUG REPORT:
      * Currently FAILING - Application does not redirect unauthenticated users to login page.
@@ -57,10 +71,10 @@ public class AddToCartTest extends TestBase {
      * Impact: Users don't understand why they can't add items to cart
      * Fix Required: Add UI redirect or error message for unauthenticated add-to-cart attempts
      */
-    @Test
+    @Test(priority = 2)
     public void testAddToCartRequiresAuthentication() throws InterruptedException {
-        System.out.println("\n▶ TC-CART-003: Testing Add to Cart Requires Authentication...");
-        System.out.println("⚠️  NOTE: This test is EXPECTED TO FAIL - Documents a UI bug");
+        System.out.println("\n▶ TC-CART-002: Testing Add to Cart Requires Authentication...");
+        System.out.println("NOTE: This test is EXPECTED TO FAIL - Documents a UI bug");
 
         // ============================================
         // STEP 1: VERIFY USER IS NOT LOGGED IN
@@ -92,11 +106,11 @@ public class AddToCartTest extends TestBase {
 
         Assert.assertTrue(
                 redirectedToLogin,
-                "🐛 BUG CONFIRMED: Should redirect to login page when unauthenticated user tries to add to cart!\n" +
-                        "   Expected: URL should contain '/login'\n" +
-                        "   Actual URL: " + urlAfterClick + "\n" +
-                        "   Previous URL: " + urlBeforeClick + "\n" +
-                        "   Fix Required: Implement redirect or show error message in UI"
+                "\nBUG CONFIRMED: Should redirect to login page when unauthenticated user tries to add to cart!\n" +
+                        " Expected: URL should contain '/login'\n" +
+                        " Actual URL: " + urlAfterClick + "\n" +
+                        " Previous URL: " + urlBeforeClick + "\n" +
+                        " Fix Required: Implement redirect or show error message in UI"
         );
 
         System.out.println("✓ Test Passed - User redirected to login page");

@@ -10,11 +10,24 @@ import org.testng.annotations.Test;
 public class RegisterTest extends TestBase {
 
     /*
+     * Data Provider for registration with valid credentials
+     * Returns test valid data
+     */
+    @DataProvider(name = "registrationValidCredentials")
+    public Object[][] getRegistrationValidCredentials() {
+        return new Object[][]{
+                // firstName, lastName, email, password
+                {TestData.NEW_USER_FIRST_NAME, TestData.NEW_USER_LAST_NAME, TestData.NEW_USER_EMAIL, TestData.NEW_USER_PASSWORD},
+                {TestData.NEW_USER2_FIRST_NAME, TestData.NEW_USER2_LAST_NAME, TestData.NEW_USER2_EMAIL, TestData.NEW_USER2_PASSWORD},
+        };
+    }
+
+    /*
      * TC-AUTH-001: Verify successful user registration with valid credentials
      * Expected Result: User is registered and automatically logged in
      */
-    @Test(priority = 1)
-    public void testValidRegistration() throws InterruptedException {
+    @Test(priority = 1, dataProvider = "registrationValidCredentials")
+    public void testValidRegistration(String firstName, String lastName, String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-AUTH-001: Testing Valid Registration...");
 
         // ============================================
@@ -30,10 +43,10 @@ public class RegisterTest extends TestBase {
         // STEP 2: FILL REGISTRATION FORM
         // ============================================
         registerPage.register(
-                TestData.NEW_USER_FIRST_NAME,
-                TestData.NEW_USER_LAST_NAME,
-                TestData.NEW_USER_EMAIL,
-                TestData.NEW_USER_PASSWORD
+                firstName,
+                lastName,
+                email,
+                password
         );
         Thread.sleep(3000);
         System.out.println("✓ Registration form submitted");
@@ -42,7 +55,7 @@ public class RegisterTest extends TestBase {
         // STEP 3: VERIFY SUCCESSFUL REGISTRATION
         // ============================================
         String actualEmail = homePage.getUserEmail();
-        Assert.assertEquals(actualEmail, TestData.NEW_USER_EMAIL, "Registration failed!");
+        Assert.assertEquals(actualEmail, email, "Registration failed!");
         System.out.println("✓ Test Passed - User registered successfully!");
     }
 
@@ -54,8 +67,8 @@ public class RegisterTest extends TestBase {
     public Object[][] getExistingEmailData() {
         return new Object[][]{
                 // firstName, lastName, email, password
-                {"Ahmed", "Ali", "ahmed@gmail.com", "123"},
-                {"Amr", "Ahmed", "amr@gmail.com", "123"},
+                {TestData.USER1_FIRST_NAME, TestData.USER1_LAST_NAME, TestData.USER1_EMAIL, TestData.USER1_PASSWORD},
+                {TestData.USER2_FIRST_NAME, TestData.USER2_LAST_NAME, TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
         };
     }
 
@@ -146,6 +159,22 @@ public class RegisterTest extends TestBase {
     }
 
     /*
+     * Data Provider for invalid email format test
+     * Returns test data with various invalid email formats
+     */
+    @DataProvider(name = "invalidEmailData")
+    public Object[][] getInvalidEmailData() {
+        return new Object[][]{
+                // firstName, lastName, email, password
+                {"Ahmed", "Ali", "notanemail", "123"},                       // No @ symbol
+                {"Ahmed", "Ali", "invalid@", "123"},                         // Missing domain
+                {"Ahmed", "Ali", "@invalid.com", "123"},                     // Missing local part
+                {"Ahmed", "Ali", "invalid@.com", "123"},                     // Invalid domain
+                {"Ahmed", "Ali", "invalid@domain", "123"},                   // Missing TLD
+        };
+    }
+
+    /*
      * TC-AUTH-004: Verify registration fails with invalid email format
      *
      * BUG REPORT:
@@ -169,22 +198,6 @@ public class RegisterTest extends TestBase {
      *   - Database data quality
      * Fix Required: Add client-side email validation with error message display
      * Suggestion: Use HTML5 email validation or JavaScript regex pattern validation
-     */
-    @DataProvider(name = "invalidEmailData")
-    public Object[][] getInvalidEmailData() {
-        return new Object[][]{
-                // firstName, lastName, email, password
-                {"Ahmed", "Ali", "notanemail", "123"},                       // No @ symbol
-                {"Ahmed", "Ali", "invalid@", "123"},                         // Missing domain
-                {"Ahmed", "Ali", "@invalid.com", "123"},                     // Missing local part
-                {"Ahmed", "Ali", "invalid@.com", "123"},                     // Invalid domain
-                {"Ahmed", "Ali", "invalid@domain", "123"},                   // Missing TLD
-        };
-    }
-
-    /*
-     * TC-AUTH-004: Verify registration fails with invalid email format
-     * Expected Result: Validation error for invalid email
      */
     @Test(priority = 4, dataProvider = "invalidEmailData")
     public void testRegistrationWithInvalidEmail(String firstName, String lastName, String email, String password) throws InterruptedException {
