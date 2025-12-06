@@ -55,7 +55,7 @@ public class RegisterTest extends TestBase {
         return new Object[][]{
                 // firstName, lastName, email, password
                 {"Ahmed", "Ali", "ahmed@gmail.com", "123"},
-                {"Amr", "Essam", "amr@gmail.com", "123"},
+                {"Amr", "Ahmed", "amr@gmail.com", "123"},
         };
     }
 

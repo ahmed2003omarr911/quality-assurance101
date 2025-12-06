@@ -125,13 +125,6 @@ public class TestBase {
     }
 
     /*
-     * Helper method: Perform login with default test user
-     */
-    protected void performDefaultLogin() throws InterruptedException {
-        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
-    }
-
-    /*
      * Helper method: Get authentication token from localStorage
      * Returns empty string if token doesn't exist
      */
