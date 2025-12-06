@@ -52,7 +52,7 @@ public class RegisterTest extends TestBase {
      */
     @DataProvider(name = "existingEmailData")
     public Object[][] getExistingEmailData() {
-        return new Object[][] {
+        return new Object[][]{
                 // firstName, lastName, email, password
                 {"Ahmed", "Ali", "ahmed@gmail.com", "123"},
                 {"Amr", "Essam", "amr@gmail.com", "123"},
@@ -61,7 +61,24 @@ public class RegisterTest extends TestBase {
 
     /*
      * TC-AUTH-002: Verify registration fails with existing email
-     * Expected Result: Error message "User already exists!"
+     *
+     * BUG REPORT:
+     * Status depends on test execution - if test FAILS, this documents the bug.
+     *
+     * Expected Behavior: Display error "User already exists!" when registering with existing email
+     * Actual Behavior (if failing): No error message displayed OR incorrect error message shown
+     *
+     * Test Data:
+     * - "ahmed@gmail.com" (existing user)
+     * - "amr@gmail.com" (existing user)
+     *
+     * Priority: HIGH
+     * Impact: Users may be confused why registration fails, or worse, might overwrite existing accounts
+     * Fix Required (if failing): Ensure backend properly returns "User already exists!" error
+     *   and frontend displays it correctly to the user
+     *
+     * Note: This test should PASS if the backend and frontend properly handle duplicate emails.
+     *       If it FAILS, it indicates the error message is not being displayed correctly.
      */
     @Test(priority = 2, dataProvider = "existingEmailData")
     public void testRegistrationWithExistingEmail(String firstName, String lastName, String email, String password) throws InterruptedException {
@@ -92,7 +109,7 @@ public class RegisterTest extends TestBase {
      */
     @DataProvider(name = "missingFieldsData")
     public Object[][] getMissingFieldsData() {
-        return new Object[][] {
+        return new Object[][]{
                 // firstName, lastName, email, password, missingField
                 {"", "Ali", "test@test.com", "123", "First Name"},           // Missing first name
                 {"Ahmed", "", "test@test.com", "123", "Last Name"},          // Missing last name
@@ -129,12 +146,33 @@ public class RegisterTest extends TestBase {
     }
 
     /*
-     * Data Provider for invalid email format test
-     * Returns test data with various invalid email formats
+     * TC-AUTH-004: Verify registration fails with invalid email format
+     *
+     * BUG REPORT:
+     * Currently FAILING - Application does not validate email format on client side.
+     * Invalid emails are accepted without any validation error.
+     *
+     * Expected Behavior: Display validation error when user enters invalid email format
+     * Actual Behavior: Form accepts invalid emails (no @, missing domain, etc.) without showing error
+     *
+     * Test Data:
+     * - "notanemail" (no @ symbol)
+     * - "invalid@" (missing domain)
+     * - "@invalid.com" (missing local part)
+     * - "invalid@.com" (invalid domain)
+     * - "invalid@domain" (missing TLD)
+     *
+     * Priority: HIGH
+     * Impact: Users can register with invalid emails, causing issues with:
+     *   - Account recovery
+     *   - Email notifications
+     *   - Database data quality
+     * Fix Required: Add client-side email validation with error message display
+     * Suggestion: Use HTML5 email validation or JavaScript regex pattern validation
      */
     @DataProvider(name = "invalidEmailData")
     public Object[][] getInvalidEmailData() {
-        return new Object[][] {
+        return new Object[][]{
                 // firstName, lastName, email, password
                 {"Ahmed", "Ali", "notanemail", "123"},                       // No @ symbol
                 {"Ahmed", "Ali", "invalid@", "123"},                         // Missing domain

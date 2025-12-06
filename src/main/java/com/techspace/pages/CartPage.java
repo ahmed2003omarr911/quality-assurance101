@@ -16,6 +16,9 @@ public class CartPage {
     By checkoutButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/button");
     By increaseQuantityButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[1]/div[2]/button[2]");
     By decreaseQuantityButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[1]/div[2]/button[1]");
+    By removeItemButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[1]/div[1]/div/button");
+    By clearCartButton = By.xpath("//*[@id=\"root\"]/div/div[1]/button");
+    By emptyCartMessage = By.tagName("h2");
 
     By quantityAndPriceDisplay = By.xpath("//*[@id=\"root\"]/div/div[2]/div[1]/div[1]/div/p");
     By totalAmountDisplay = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/h5");
@@ -39,6 +42,13 @@ public class CartPage {
     }
 
     /*
+     * Get empty cart message
+     */
+    public String getEmptyCartMessage() {
+        return driver.findElement(emptyCartMessage).getText();
+    }
+
+    /*
      * Click checkout button
      */
     public void clickCheckoutButton() {
@@ -57,6 +67,20 @@ public class CartPage {
      */
     public void clickDecreaseQuantityButton() {
         driver.findElement(decreaseQuantityButton).click();
+    }
+
+    /*
+     * Click remove item button
+     */
+    public void clickRemoveItemButton() {
+        driver.findElement(removeItemButton).click();
+    }
+
+    /*
+     * Click clear cart button
+     */
+    public void clickClearCartButton() {
+        driver.findElement(clearCartButton).click();
     }
 
     /*

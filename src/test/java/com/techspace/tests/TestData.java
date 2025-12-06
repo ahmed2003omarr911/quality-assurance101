@@ -31,7 +31,7 @@ public class TestData {
     // ============================================
     // PRODUCT DETAILS
     // ============================================
-    public static final String PRODUCT_NAME = "MSI Laptop";
+    public static final String PRODUCT_NAME = "ASUS Laptop";
 
     // ============================================
     // DELIVERY INFORMATION

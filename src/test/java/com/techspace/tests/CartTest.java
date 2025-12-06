@@ -406,4 +406,149 @@ public class CartTest extends TestBase {
 
         System.out.println("\n✓ Test Passed - Total amount calculates correctly for all quantities!");
     }
+
+    /*
+     * TC-CART-009: Verify user can remove item from cart
+     * Input: Click "Remove Item" button
+     * Expected: Item removed, cart shows empty state
+     *
+     * Prerequisites:
+     * - User must be logged in
+     * - Product must be in cart
+     */
+    @Test
+    public void testRemoveItemFromCart() throws InterruptedException {
+        System.out.println("\n▶ TC-CART-009: Testing Remove Item From Cart...");
+
+        // ============================================
+        // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
+        // ============================================
+        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        System.out.println("✓ User logged in");
+
+        homePage.addProductToCart();
+        Thread.sleep(2000);
+        System.out.println("✓ Product added to cart");
+
+        // ============================================
+        // STEP 1: NAVIGATE TO CART PAGE
+        // ============================================
+        homePage.clickCartIcon();
+        Thread.sleep(3000);
+        System.out.println("✓ Navigated to cart page");
+
+        // ============================================
+        // STEP 2: VERIFY PRODUCT IS IN CART
+        // ============================================
+        String productBeforeRemoval = cartPage.getProductTitle();
+        Assert.assertEquals(productBeforeRemoval, TestData.PRODUCT_NAME,
+                "Product should be in cart before removal!");
+        System.out.println("✓ Product in cart before removal: " + productBeforeRemoval);
+
+        double totalBeforeRemoval = cartPage.getTotalAmount();
+        Assert.assertTrue(totalBeforeRemoval > 0,
+                "Total should be greater than 0 before removal!");
+        System.out.println("✓ Total before removal: " + totalBeforeRemoval);
+
+        // ============================================
+        // STEP 3: CLICK REMOVE ITEM BUTTON
+        // ============================================
+        cartPage.clickRemoveItemButton();
+        Thread.sleep(3000); // Wait for removal and UI update
+        System.out.println("✓ Clicked remove item button");
+
+        // ============================================
+        // STEP 4: VERIFY CART IS EMPTY
+        // ============================================
+        String emptyCartMessage = cartPage.getEmptyCartMessage();
+        Assert.assertTrue(
+                emptyCartMessage.contains("Cart is Empty!"),
+                "Empty cart message should be displayed!\n" +
+                        "Expected: Message containing 'Cart is Empty' or 'empty'\n" +
+                        "Actual: " + emptyCartMessage
+        );
+        System.out.println("✓ Empty cart message displayed: " + emptyCartMessage);
+
+        System.out.println("✓ Test Passed - Item removed successfully and cart is empty!");
+    }
+
+    /*
+     * TC-CART-010: Verify user can clear entire cart
+     * Input: Click "Clear Cart" button
+     * Expected: All items removed, cart shows "Cart is Empty!"
+     *
+     * Prerequisites:
+     * - User must be logged in
+     * - Multiple products in cart (or at least one)
+     */
+    @Test
+    public void testClearEntireCart() throws InterruptedException {
+        System.out.println("\n▶ TC-CART-010: Testing Clear Entire Cart...");
+
+        // ============================================
+        // PRECONDITION: LOGIN AND ADD PRODUCT TO CART
+        // ============================================
+        performLogin(TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
+        System.out.println("✓ User logged in");
+
+        homePage.addProductToCart();
+        Thread.sleep(2000);
+        System.out.println("✓ Product added to cart");
+
+        // ============================================
+        // STEP 1: NAVIGATE TO CART PAGE
+        // ============================================
+        homePage.clickCartIcon();
+        Thread.sleep(3000);
+        System.out.println("✓ Navigated to cart page");
+
+        // ============================================
+        // STEP 2: VERIFY CART HAS ITEMS
+        // ============================================
+        String productBeforeClear = cartPage.getProductTitle();
+        Assert.assertEquals(productBeforeClear, TestData.PRODUCT_NAME,
+                "Product should be in cart before clearing!");
+        System.out.println("✓ Product in cart before clear: " + productBeforeClear);
+
+        double totalBeforeClear = cartPage.getTotalAmount();
+        Assert.assertTrue(totalBeforeClear > 0,
+                "Total should be greater than 0 before clearing!");
+        System.out.println("✓ Total before clear: " + totalBeforeClear);
+
+        // ============================================
+        // STEP 3: INCREASE QUANTITY TO MAKE CART MORE FULL
+        // ============================================
+        cartPage.clickIncreaseQuantityButton();
+        Thread.sleep(1500);
+        cartPage.clickIncreaseQuantityButton();
+        Thread.sleep(1500);
+        int quantityBeforeClear = cartPage.getQuantity();
+        System.out.println("✓ Increased quantity to: " + quantityBeforeClear);
+
+        double totalAfterIncrease = cartPage.getTotalAmount();
+        System.out.println("✓ Total after increasing quantity: " + totalAfterIncrease);
+        Assert.assertTrue(totalAfterIncrease > totalBeforeClear,
+                "Total should increase after adding more quantity!");
+
+        // ============================================
+        // STEP 4: CLICK CLEAR CART BUTTON
+        // ============================================
+        cartPage.clickClearCartButton();
+        Thread.sleep(3000); // Wait for cart to clear and UI update
+        System.out.println("✓ Clicked clear cart button");
+
+        // ============================================
+        // STEP 5: VERIFY CART IS COMPLETELY EMPTY
+        // ============================================
+        String emptyCartMessage = cartPage.getEmptyCartMessage();
+        Assert.assertTrue(
+                emptyCartMessage.contains("Cart is Empty!"),
+                "Empty cart message should be displayed!\n" +
+                        "Expected: Message containing 'Cart is Empty' or 'empty'\n" +
+                        "Actual: " + emptyCartMessage
+        );
+        System.out.println("✓ Empty cart message displayed: " + emptyCartMessage);
+
+        System.out.println("✓ Test Passed - Cart cleared successfully and all items removed!");
+    }
 }
