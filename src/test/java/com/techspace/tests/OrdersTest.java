@@ -17,7 +17,7 @@ public class OrdersTest extends TestBase {
     public Object[][] getLoginValidCredentials() {
         return new Object[][]{
                 // email, password, ordersPageHeading
-                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD, TestData.ORDERS_PAGE_HEADING},
+                {TestData.USER7_EMAIL, TestData.USER7_PASSWORD, TestData.ORDERS_PAGE_HEADING},
         };
     }
 

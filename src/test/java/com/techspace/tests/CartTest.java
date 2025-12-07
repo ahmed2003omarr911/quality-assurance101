@@ -20,7 +20,7 @@ public class CartTest extends TestBase {
     public Object[][] getLoginValidCredentials() {
         return new Object[][]{
                 // email, password
-                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD},
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
         };
     }
 
@@ -145,7 +145,7 @@ public class CartTest extends TestBase {
     public Object[][] getLoginValidCredentials1() {
         return new Object[][]{
                 // email, password
-                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
+                {TestData.USER3_EMAIL, TestData.USER3_PASSWORD},
         };
     }
 
@@ -224,7 +224,7 @@ public class CartTest extends TestBase {
     public Object[][] getLoginValidCredentials2() {
         return new Object[][]{
                 // email, password
-                {TestData.USER3_EMAIL, TestData.USER3_PASSWORD},
+                {TestData.USER4_EMAIL, TestData.USER4_PASSWORD},
         };
     }
 
@@ -313,7 +313,7 @@ public class CartTest extends TestBase {
     public Object[][] getLoginValidCredentials3() {
         return new Object[][]{
                 // email, password
-                {TestData.USER4_EMAIL, TestData.USER4_PASSWORD},
+                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD},
         };
     }
 
@@ -380,7 +380,7 @@ public class CartTest extends TestBase {
     public Object[][] getLoginValidCredentials4() {
         return new Object[][]{
                 // email, password
-                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD},
+                {TestData.USER6_EMAIL, TestData.USER6_PASSWORD},
         };
     }
 

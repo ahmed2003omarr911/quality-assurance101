@@ -17,7 +17,7 @@ public class CheckoutTest extends TestBase {
     public Object[][] getLoginValidCredentials() {
         return new Object[][]{
                 // email, password, address, orderSuccessMessage
-                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
+                {TestData.USER7_EMAIL, TestData.USER7_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
         };
     }
 

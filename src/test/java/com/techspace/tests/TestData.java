@@ -50,9 +50,15 @@ public class TestData {
     public static final String USER6_EMAIL = "ganna@gmail.com";
     public static final String USER6_PASSWORD = "123";
 
+    // Another existing user
+    public static final String USER7_FIRST_NAME = "Amira";
+    public static final String USER7_LAST_NAME = "Ahmed";
+    public static final String USER7_EMAIL = "amira@gmail.com";
+    public static final String USER7_PASSWORD = "123";
+
     // New user for registration test
     public static final String NEW_USER_FIRST_NAME = "Muhammed";
-    public static final String NEW_USER_LAST_NAME = "Ahmed";
+    public static final String NEW_USER_LAST_NAME = "Ali";
     public static final String NEW_USER_EMAIL = "muhammed@gmail.com";
     public static final String NEW_USER_PASSWORD = "123";
 

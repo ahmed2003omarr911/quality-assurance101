@@ -16,9 +16,8 @@ public class AddToCartTest extends TestBase {
     @DataProvider(name = "addingProductToCart")
     public Object[][] getLoginValidCredentials() {
         return new Object[][]{
-                // email, password
+                // email, password, productName
                 {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.PRODUCT_NAME},
-                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.PRODUCT_NAME},
         };
     }
 
