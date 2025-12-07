@@ -2,12 +2,17 @@ package com.techspace.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 /*
  * Page Object Model for Orders Page
  */
 public class OrdersPage {
     WebDriver driver;
+    WebDriverWait wait;
 
     // ============================================
     // LOCATORS
@@ -20,6 +25,7 @@ public class OrdersPage {
     // ============================================
     public OrdersPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ============================================
@@ -30,11 +36,11 @@ public class OrdersPage {
      * Get page heading text
      */
     public String getPageHeading() {
-        return driver.findElement(pageHeading).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(pageHeading)).getText();
     }
 
     public int calculateNumberOfOrders() {
-        int numberOfOrders = driver.findElements(orderLocator).size();
+        int numberOfOrders = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(orderLocator)).size();;
         if (numberOfOrders > 0) {
             System.out.println("Number of orders: " + numberOfOrders);
         } else {

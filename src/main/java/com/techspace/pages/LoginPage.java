@@ -2,12 +2,17 @@ package com.techspace.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 /*
  * Page Object Model for Login Page
  */
 public class LoginPage {
     WebDriver driver;
+    WebDriverWait wait;
 
     // ============================================
     // LOCATORS
@@ -25,6 +30,7 @@ public class LoginPage {
     // ============================================
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ============================================
@@ -35,28 +41,29 @@ public class LoginPage {
      * Enter email address
      */
     public void enterEmail(String email) {
-        driver.findElement(emailField).sendKeys(email);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(emailField)).sendKeys(email);
     }
 
     /*
      * Enter password
      */
     public void enterPassword(String password) {
-        driver.findElement(passwordField).sendKeys(password);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField)).sendKeys(password);
     }
 
     /*
      * Click login button
      */
     public void clickLoginButton() {
-        driver.findElement(loginButton).click();
+        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
     }
 
     /*
      * Navigate to Registration Page
      */
     public void clickRegisterLink() {
-        driver.findElement(registerLink).click();
+        wait.until(ExpectedConditions.elementToBeClickable(registerLink)).click();
+        wait.until(ExpectedConditions.urlContains("/register"));
     }
 
     /*
@@ -80,13 +87,13 @@ public class LoginPage {
      * Get error message displayed on the page
      */
     public String getErrorMessage() {
-        return driver.findElement(errorMessage).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText();
     }
 
     /*
      * Check if user is still on login page (login failed)
      */
     public boolean isOnLoginPage() {
-        return driver.findElement(loginButton).isDisplayed();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(loginButton)).isDisplayed();
     }
 }

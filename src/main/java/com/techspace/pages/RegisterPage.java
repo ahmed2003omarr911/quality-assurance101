@@ -2,12 +2,17 @@ package com.techspace.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 /*
  * Page Object Model for Registration Page
  */
 public class RegisterPage {
     WebDriver driver;
+    WebDriverWait wait;
 
     // ============================================
     // LOCATORS
@@ -26,6 +31,7 @@ public class RegisterPage {
     // ============================================
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ============================================
@@ -36,35 +42,35 @@ public class RegisterPage {
      * Enter first name
      */
     public void enterFirstName(String firstName) {
-        driver.findElement(firstNameField).sendKeys(firstName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
     }
 
     /*
      * Enter last name
      */
     public void enterLastName(String lastName) {
-        driver.findElement(lastNameField).sendKeys(lastName);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(lastNameField)).sendKeys(lastName);
     }
 
     /*
      * Enter email address
      */
     public void enterEmail(String email) {
-        driver.findElement(emailField).sendKeys(email);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(emailField)).sendKeys(email);
     }
 
     /*
      * Enter password
      */
     public void enterPassword(String password) {
-        driver.findElement(passwordField).sendKeys(password);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField)).sendKeys(password);
     }
 
     /*
      * Click register button
      */
     public void clickRegisterButton() {
-        driver.findElement(registerButton).click();
+        wait.until(ExpectedConditions.elementToBeClickable(registerButton)).click();
     }
 
     /*
@@ -94,13 +100,13 @@ public class RegisterPage {
      * Get error message displayed on the page
      */
     public String getErrorMessage() {
-        return driver.findElement(errorMessage).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText();
     }
 
     /*
      * Check if error message is displayed
      */
     public boolean isErrorDisplayed() {
-        return driver.findElement(errorMessage).isDisplayed();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).isDisplayed();
     }
 }

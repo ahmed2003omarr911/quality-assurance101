@@ -59,11 +59,9 @@ public class LogoutTest extends TestBase {
         // STEP 3: PERFORM LOGOUT
         // ============================================
         homePage.clickUserMenu();
-        Thread.sleep(2000); // Wait for dropdown menu
         System.out.println("✓ User menu opened");
 
         homePage.clickLogoutButton();
-        Thread.sleep(3000); // Wait for logout to complete
         System.out.println("✓ Logout button clicked");
 
         // ============================================
@@ -97,14 +95,11 @@ public class LogoutTest extends TestBase {
 
         // LOGOUT
         homePage.clickUserMenu();
-        Thread.sleep(2000);
         homePage.clickLogoutButton();
-        Thread.sleep(3000);
         System.out.println("✓ User logged out");
 
         // TRY TO ACCESS CART
         homePage.clickCartIcon();
-        Thread.sleep(2000);
 
         // VERIFY REDIRECT TO LOGIN PAGE
         String currentUrl = driver.getCurrentUrl();

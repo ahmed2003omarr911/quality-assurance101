@@ -16,9 +16,8 @@ public class OrdersTest extends TestBase {
     @DataProvider(name = "loginWithValidCredentialsWithOrdersPageHeading")
     public Object[][] getLoginValidCredentials() {
         return new Object[][]{
-                // email, password
-                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.ORDERS_PAGE_HEADING},
-                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.ORDERS_PAGE_HEADING},
+                // email, password, ordersPageHeading
+                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD, TestData.ORDERS_PAGE_HEADING},
         };
     }
 
@@ -40,14 +39,13 @@ public class OrdersTest extends TestBase {
         // STEP 1: OPEN USER MENU
         // ============================================
         homePage.clickUserMenu();
-        Thread.sleep(3000);
         System.out.println("✓ User menu opened");
 
         // ============================================
         // STEP 2: NAVIGATE TO ORDERS PAGE
         // ============================================
         homePage.navToMyOrdersPage();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to orders page");
 
         // ============================================
@@ -72,9 +70,7 @@ public class OrdersTest extends TestBase {
 
         // NAVIGATE TO ORDERS PAGE
         homePage.clickUserMenu();
-        Thread.sleep(5000);
         homePage.navToMyOrdersPage();
-        Thread.sleep(5000);
 
         // VERIFY ORDERS ARE DISPLAYED
         int numberOfOrders = ordersPage.calculateNumberOfOrders();

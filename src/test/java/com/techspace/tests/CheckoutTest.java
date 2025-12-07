@@ -16,9 +16,8 @@ public class CheckoutTest extends TestBase {
     @DataProvider(name = "loginWithValidCredentialsWithAddressAndSuccessMessage")
     public Object[][] getLoginValidCredentials() {
         return new Object[][]{
-                // email, password
-                {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
-                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
+                // email, password, address, orderSuccessMessage
+                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD, TestData.DELIVERY_ADDRESS, TestData.ORDER_SUCCESS_MESSAGE},
         };
     }
 
@@ -38,28 +37,26 @@ public class CheckoutTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(5000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
         // STEP 2: PROCEED TO CHECKOUT
         // ============================================
         cartPage.clickCheckoutButton();
-        Thread.sleep(5000);
+        waitForPageToLoad();
         System.out.println("✓ Proceeded to checkout page");
 
         // ============================================
         // STEP 3: COMPLETE CHECKOUT
         // ============================================
         checkoutPage.completeCheckout(address);
-        Thread.sleep(5000);
         System.out.println("✓ Checkout completed with address: " + address);
 
         // ============================================

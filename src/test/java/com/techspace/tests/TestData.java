@@ -26,6 +26,30 @@ public class TestData {
     public static final String USER2_EMAIL = "amr@gmail.com";
     public static final String USER2_PASSWORD = "123";
 
+    // Another existing user
+    public static final String USER3_FIRST_NAME = "Ahmed";
+    public static final String USER3_LAST_NAME = "Omar";
+    public static final String USER3_EMAIL = "ahmed@gmail.com";
+    public static final String USER3_PASSWORD = "123";
+
+    // Another existing user
+    public static final String USER4_FIRST_NAME = "Yusuf";
+    public static final String USER4_LAST_NAME = "Ahmed";
+    public static final String USER4_EMAIL = "yusuf@gmail.com";
+    public static final String USER4_PASSWORD = "123";
+
+    // Another existing user
+    public static final String USER5_FIRST_NAME = "Aya";
+    public static final String USER5_LAST_NAME = "Ahmed";
+    public static final String USER5_EMAIL = "aya@gmail.com";
+    public static final String USER5_PASSWORD = "123";
+
+    // Another existing user
+    public static final String USER6_FIRST_NAME = "Ganna";
+    public static final String USER6_LAST_NAME = "Ahmed";
+    public static final String USER6_EMAIL = "ganna@gmail.com";
+    public static final String USER6_PASSWORD = "123";
+
     // New user for registration test
     public static final String NEW_USER_FIRST_NAME = "Muhammed";
     public static final String NEW_USER_LAST_NAME = "Ahmed";

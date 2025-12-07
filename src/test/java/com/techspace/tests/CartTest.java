@@ -21,7 +21,6 @@ public class CartTest extends TestBase {
         return new Object[][]{
                 // email, password
                 {TestData.USER1_EMAIL, TestData.USER1_PASSWORD},
-                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
         };
     }
 
@@ -56,14 +55,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -78,13 +76,12 @@ public class CartTest extends TestBase {
                 cartPage.clickIncreaseQuantityButton();
                 Thread.sleep(1500);
             } catch (Exception e) {
-                System.out.println("⚠️  Could not click increase button (attempt " + (i + 1) + ")");
+                System.out.println("Could not click increase button (attempt " + (i + 1) + ")");
                 break;
             }
         }
 
         System.out.println("✓ Completed clicking increase quantity button");
-        Thread.sleep(2000); // Wait for any error message to appear
 
         // ============================================
         // STEP 3: TRY TO FIND ERROR MESSAGE IN UI
@@ -141,6 +138,18 @@ public class CartTest extends TestBase {
     }
 
     /*
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentials1")
+    public Object[][] getLoginValidCredentials1() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD},
+        };
+    }
+
+    /*
      * TC-CART-004: Verify user can increase product quantity
      * Input: Click "+" button on cart item
      * Expected: Quantity increases, total amount updates
@@ -149,7 +158,7 @@ public class CartTest extends TestBase {
      * - User must be logged in
      * - Product must be in cart
      */
-    @Test(priority = 2, dataProvider = "loginWithValidCredentials")
+    @Test(priority = 2, dataProvider = "loginWithValidCredentials1")
     public void testIncreaseProductQuantity(String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-CART-004: Testing Increase Product Quantity...");
 
@@ -160,14 +169,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -185,7 +193,7 @@ public class CartTest extends TestBase {
         // STEP 3: INCREASE QUANTITY
         // ============================================
         cartPage.clickIncreaseQuantityButton();
-        Thread.sleep(2000); // Wait for update
+        Thread.sleep(1500);
         System.out.println("✓ Clicked increase quantity button");
 
         // ============================================
@@ -209,6 +217,18 @@ public class CartTest extends TestBase {
     }
 
     /*
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentials2")
+    public Object[][] getLoginValidCredentials2() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER3_EMAIL, TestData.USER3_PASSWORD},
+        };
+    }
+
+    /*
      * TC-CART-005: Verify user can decrease product quantity
      * Input: Click "-" button on cart item
      * Expected: Quantity decreases, total amount updates
@@ -218,7 +238,7 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Quantity must be greater than 1
      */
-    @Test(priority = 3, dataProvider = "loginWithValidCredentials")
+    @Test(priority = 3, dataProvider = "loginWithValidCredentials2")
     public void testDecreaseProductQuantity(String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-CART-005: Testing Decrease Product Quantity...");
 
@@ -229,14 +249,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -263,7 +282,7 @@ public class CartTest extends TestBase {
         // STEP 4: DECREASE QUANTITY
         // ============================================
         cartPage.clickDecreaseQuantityButton();
-        Thread.sleep(2000); // Wait for update
+        Thread.sleep(1500); // Wait for update
         System.out.println("✓ Clicked decrease quantity button");
 
         // ============================================
@@ -287,6 +306,18 @@ public class CartTest extends TestBase {
     }
 
     /*
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentials3")
+    public Object[][] getLoginValidCredentials3() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER4_EMAIL, TestData.USER4_PASSWORD},
+        };
+    }
+
+    /*
      * TC-CART-006: Verify quantity cannot be decreased below 1
      * Input: Click "-" when quantity is 1
      * Expected: Quantity remains 1 (no action)
@@ -296,7 +327,7 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Quantity must be 1
      */
-    @Test(priority = 4, dataProvider = "loginWithValidCredentials")
+    @Test(priority = 4, dataProvider = "loginWithValidCredentials3")
     public void testCannotDecreaseQuantityBelowOne(String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-CART-006: Testing Cannot Decrease Quantity Below 1...");
 
@@ -307,14 +338,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -329,7 +359,7 @@ public class CartTest extends TestBase {
         // STEP 3: ATTEMPT TO DECREASE QUANTITY
         // ============================================
         cartPage.clickDecreaseQuantityButton();
-        Thread.sleep(2000); // Wait for any update
+        Thread.sleep(1500); // Wait for any update
         System.out.println("✓ Clicked decrease quantity button");
 
         // ============================================
@@ -343,6 +373,18 @@ public class CartTest extends TestBase {
     }
 
     /*
+     * Data Provider for Login with valid credentials
+     * Returns test valid data for login
+     */
+    @DataProvider(name = "loginWithValidCredentials4")
+    public Object[][] getLoginValidCredentials4() {
+        return new Object[][]{
+                // email, password
+                {TestData.USER5_EMAIL, TestData.USER5_PASSWORD},
+        };
+    }
+
+    /*
      * TC-CART-007: Verify total amount calculates correctly
      * Input: Multiple items with different quantities
      * Expected: Total = sum of (quantity × unitPrice) for all items
@@ -352,7 +394,7 @@ public class CartTest extends TestBase {
      * - Product must be in cart
      * - Test multiple quantity scenarios
      */
-    @Test(priority = 5, dataProvider = "loginWithValidCredentials")
+    @Test(priority = 5, dataProvider = "loginWithValidCredentials4")
     public void testTotalAmountCalculation(String email, String password) throws InterruptedException {
         System.out.println("\n▶ TC-CART-007: Testing Total Amount Calculation...");
 
@@ -363,14 +405,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -427,9 +468,9 @@ public class CartTest extends TestBase {
     @DataProvider(name = "loginWithValidCredentialsAndProductName")
     public Object[][] getLoginValidCredentialsWithProductName() {
         return new Object[][]{
-                // email, password
+                // email, password, productName
                 {TestData.USER1_EMAIL, TestData.USER1_PASSWORD, TestData.PRODUCT_NAME},
-                {TestData.USER2_EMAIL, TestData.USER2_PASSWORD, TestData.PRODUCT_NAME},
+
         };
     }
 
@@ -453,14 +494,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -480,7 +520,6 @@ public class CartTest extends TestBase {
         // STEP 3: CLICK REMOVE ITEM BUTTON
         // ============================================
         cartPage.clickRemoveItemButton();
-        Thread.sleep(3000); // Wait for removal and UI update
         System.out.println("✓ Clicked remove item button");
 
         // ============================================
@@ -518,14 +557,13 @@ public class CartTest extends TestBase {
         System.out.println("✓ User logged in");
 
         homePage.addProductToCart();
-        Thread.sleep(2000);
         System.out.println("✓ Product added to cart");
 
         // ============================================
         // STEP 1: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -560,7 +598,6 @@ public class CartTest extends TestBase {
         // STEP 4: CLICK CLEAR CART BUTTON
         // ============================================
         cartPage.clickClearCartButton();
-        Thread.sleep(3000); // Wait for cart to clear and UI update
         System.out.println("✓ Clicked clear cart button");
 
         // ============================================

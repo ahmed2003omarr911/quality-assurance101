@@ -34,13 +34,14 @@ public class LoginTest extends TestBase {
         // STEP 1: NAVIGATE TO LOGIN PAGE
         // ============================================
         homePage.clickLoginButton();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to login page");
 
         // ============================================
         // STEP 2: PERFORM LOGIN
         // ============================================
         loginPage.login(email, password);
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Login credentials submitted");
 
         // ============================================
@@ -88,7 +89,7 @@ public class LoginTest extends TestBase {
         // STEP 3: REFRESH THE PAGE
         // ============================================
         driver.navigate().refresh();
-        Thread.sleep(3000); // Wait for page to reload
+        waitForPageToLoad();
         System.out.println("✓ Page refreshed");
 
         // ============================================
@@ -159,16 +160,16 @@ public class LoginTest extends TestBase {
 
         // STEP 1: NAVIGATE TO LOGIN PAGE
         homePage.clickLoginButton();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to login page");
 
         // STEP 2: ATTEMPT LOGIN WITH WRONG PASSWORD
         loginPage.login(email, password);
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Attempted login with incorrect password");
 
         // STEP 3: VERIFY ERROR MESSAGE
         String errorMessage = loginPage.getErrorMessage();
-
         Assert.assertTrue(
                 errorMessage.contains(TestData.ERROR_INCORRECT_CREDENTIALS),
                 "Expected error message not displayed. Actual: " + errorMessage
@@ -196,7 +197,7 @@ public class LoginTest extends TestBase {
      * BUG REPORT:
      * Status depends on test execution - if test FAILS, this documents the bug.
      *
-     * Expected Behavior: Display error "Incorrect Email or Password!" when user tries to login with non-existent email
+     * Expected Behavior: Display error "Incorrect Email or Password!" when user tries to log in with non-existent email
      * Actual Behavior (if failing): No error message displayed OR incorrect error message shown
      *
      * Test Data:
@@ -220,16 +221,16 @@ public class LoginTest extends TestBase {
 
         // STEP 1: NAVIGATE TO LOGIN PAGE
         homePage.clickLoginButton();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to login page");
 
         // STEP 2: ATTEMPT LOGIN WITH NON-EXISTENT EMAIL
         loginPage.login(email, password);
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Attempted login with non-existent email");
 
         // STEP 3: VERIFY ERROR MESSAGE
         String errorMessage = loginPage.getErrorMessage();
-
         Assert.assertTrue(
                 errorMessage.contains(TestData.ERROR_INCORRECT_CREDENTIALS),
                 "Expected error message not displayed. Actual: " + errorMessage
@@ -263,16 +264,16 @@ public class LoginTest extends TestBase {
 
         // STEP 1: NAVIGATE TO LOGIN PAGE
         homePage.clickLoginButton();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to login page");
 
         // STEP 2: ATTEMPT LOGIN WITH EMPTY CREDENTIALS
         loginPage.login(email, password);
-        Thread.sleep(2000);
+        waitForPageToLoad();
         System.out.println("✓ Attempted login with empty " + emptyField);
 
         // STEP 3: VERIFY ERROR MESSAGE
         String errorMessage = loginPage.getErrorMessage();
-
         Assert.assertEquals(errorMessage, TestData.ERROR_EMPTY_CREDENTIALS,
                 "Expected error message not displayed for empty " + emptyField
         );

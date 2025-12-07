@@ -46,7 +46,7 @@ public class AddToCartTest extends TestBase {
         // STEP 2: NAVIGATE TO CART PAGE
         // ============================================
         homePage.clickCartIcon();
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Navigated to cart page");
 
         // ============================================
@@ -93,7 +93,7 @@ public class AddToCartTest extends TestBase {
         // STEP 3: ATTEMPT TO ADD PRODUCT TO CART WITHOUT LOGIN
         // ============================================
         homePage.addProductToCart();
-        Thread.sleep(3000); // Wait for any response/redirect
+        waitForPageToLoad();
         System.out.println("✓ Clicked 'Add to Cart' button while unauthenticated");
 
         // ============================================

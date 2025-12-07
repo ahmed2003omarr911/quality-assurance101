@@ -34,9 +34,11 @@ public class RegisterTest extends TestBase {
         // STEP 1: NAVIGATE TO REGISTRATION PAGE
         // ============================================
         homePage.clickLoginButton();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to login page");
 
         loginPage.clickRegisterLink();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to registration page");
 
         // ============================================
@@ -48,7 +50,7 @@ public class RegisterTest extends TestBase {
                 email,
                 password
         );
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Registration form submitted");
 
         // ============================================
@@ -99,12 +101,14 @@ public class RegisterTest extends TestBase {
 
         // STEP 1: NAVIGATE TO REGISTRATION PAGE
         homePage.clickLoginButton();
+        waitForPageToLoad();
         loginPage.clickRegisterLink();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to registration page");
 
         // STEP 2: ATTEMPT REGISTRATION WITH EXISTING EMAIL
         registerPage.register(firstName, lastName, email, password);
-        Thread.sleep(3000);
+        waitForPageToLoad();
         System.out.println("✓ Attempted registration with existing email: " + email);
 
         // STEP 3: VERIFY ERROR MESSAGE
@@ -141,12 +145,14 @@ public class RegisterTest extends TestBase {
 
         // STEP 1: NAVIGATE TO REGISTRATION PAGE
         homePage.clickLoginButton();
+        waitForPageToLoad();
         loginPage.clickRegisterLink();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to registration page");
 
         // STEP 2: ATTEMPT REGISTRATION WITH MISSING FIELD
         registerPage.register(firstName, lastName, email, password);
-        Thread.sleep(2000);
+        waitForPageToLoad();
         System.out.println("✓ Attempted registration with missing: " + missingField);
 
         // STEP 3: VERIFY ERROR MESSAGE
@@ -205,12 +211,14 @@ public class RegisterTest extends TestBase {
 
         // STEP 1: NAVIGATE TO REGISTRATION PAGE
         homePage.clickLoginButton();
+        waitForPageToLoad();
         loginPage.clickRegisterLink();
+        waitForPageToLoad();
         System.out.println("✓ Navigated to registration page");
 
         // STEP 2: ATTEMPT REGISTRATION WITH INVALID EMAIL
         registerPage.register(firstName, lastName, email, password);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         System.out.println("✓ Attempted registration with invalid email: " + email);
 
         // STEP 3: VERIFY VALIDATION ERROR
